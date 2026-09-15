@@ -60,27 +60,31 @@ async function getuser() {
 }
 
 app.get("/", async (req, res) => {
+    try {
+        const contries = await getCountries();
+        const user = await getUser();
+        const person = await getuser();
 
-    const contries = await getCountries();
-    const user = await getUser();
-    const person = await getuser();
+        const error = req.query.error;
+        const message = req.query.mess;
 
-    const error = req.query.error;
-    const message = req.query.mess;
+        console.log(person);
 
-    console.log(person);
+        res.render("index.ejs", {
+            countries: contries,
+            users: user,
+            userss: person,
+            error: error,
+            message: message
+        });
 
-    res.render("index.ejs", {
-        countries: contries,
-        users: user,
-        userss: person,
-        error: error,
-        message: message
-    });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 app.post("/user", (req, res) => {
-
     const result = req.body.user;
 
     currentUserId = result;
@@ -89,125 +93,157 @@ app.post("/user", (req, res) => {
 });
 
 app.post("/add", async (req, res) => {
+    try {
 
-    const country_name = req.body.country;
+        if (!currentUserId) {
+            const error = "Please select a family member first";
 
-    const result = await db.query(
-        "SELECT * FROM countries WHERE LOWER(country_name) = LOWER($1)",
-        [country_name]
-    );
-
-    if (result.rows.length > 0) {
-
-        const code = result.rows[0].country_code;
-
-        const country_check = await db.query(
-            `
-            SELECT *
-            FROM visited_countries
-            WHERE user_id = $1
-            AND country_code = $2
-            `,
-            [currentUserId, code]
-        );
-
-        if (country_check.rows.length === 0) {
-
-            await db.query(
-                `
-                INSERT INTO visited_countries
-                    (country_code, user_id)
-                VALUES
-                    ($1, $2)
-                `,
-                [code, currentUserId]
-            );
-
-            res.redirect("/");
-
-        } else {
-
-            const mess = "the country is already added";
-
-            res.redirect(
-                "/?mess=" + encodeURIComponent(mess)
+            return res.redirect(
+                "/?error=" + encodeURIComponent(error)
             );
         }
 
-    } else {
+        const country_name = req.body.country;
 
-        const error =
-            "country not existed or please enter valid country name";
-
-        res.redirect(
-            "/?error=" + encodeURIComponent(error)
+        const result = await db.query(
+            "SELECT * FROM countries WHERE LOWER(country_name) = LOWER($1)",
+            [country_name]
         );
+
+        if (result.rows.length > 0) {
+
+            const code = result.rows[0].country_code;
+
+            const country_check = await db.query(
+                `
+                SELECT *
+                FROM visited_countries
+                WHERE user_id = $1
+                AND country_code = $2
+                `,
+                [currentUserId, code]
+            );
+
+            if (country_check.rows.length === 0) {
+
+                await db.query(
+                    `
+                    INSERT INTO visited_countries
+                        (country_code, user_id)
+                    VALUES
+                        ($1, $2)
+                    `,
+                    [code, currentUserId]
+                );
+
+                res.redirect("/");
+
+            } else {
+
+                const mess = "the country is already added";
+
+                res.redirect(
+                    "/?mess=" + encodeURIComponent(mess)
+                );
+            }
+
+        } else {
+
+            const error =
+                "country not existed or please enter valid country name";
+
+            res.redirect(
+                "/?error=" + encodeURIComponent(error)
+            );
+        }
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
     }
 });
 
 app.post("/new_user", async (req, res) => {
+    try {
 
-    const user = req.body.new_user;
-    const color = req.body.user_color;
+        const user = req.body.new_user;
+        const color = req.body.user_color;
 
-    if (color && user) {
+        if (color && user) {
 
-        const result = await db.query(
-            `
-            INSERT INTO users(name, color)
-            VALUES($1, $2)
-            RETURNING id
-            `,
-            [user, color]
-        );
+            const result = await db.query(
+                `
+                INSERT INTO users(name, color)
+                VALUES($1, $2)
+                RETURNING id
+                `,
+                [user, color]
+            );
 
-        currentUserId = result.rows[0].id;
+            currentUserId = result.rows[0].id;
+        }
+
+        res.redirect("/");
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
     }
-
-    res.redirect("/");
 });
 
 app.post("/delete", async (req, res) => {
+    try {
 
-    const user_del = req.body.user;
+        const user_del = req.body.user;
 
-    await db.query(
-        `
-        DELETE FROM visited_countries
-        WHERE user_id = $1
-        `,
-        [user_del]
-    );
+        await db.query(
+            `
+            DELETE FROM visited_countries
+            WHERE user_id = $1
+            `,
+            [user_del]
+        );
 
-    await db.query(
-        `
-        DELETE FROM users
-        WHERE id = $1
-        `,
-        [user_del]
-    );
+        await db.query(
+            `
+            DELETE FROM users
+            WHERE id = $1
+            `,
+            [user_del]
+        );
 
-    if (currentUserId == user_del) {
-        currentUserId = null;
+        if (currentUserId == user_del) {
+            currentUserId = null;
+        }
+
+        res.redirect("/");
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
     }
-
-    res.redirect("/");
 });
 
 app.post("/delete_con", async (req, res) => {
+    try {
 
-    const country_code = req.body.country;
+        const country_code = req.body.country;
 
-    await db.query(
-        `
-        DELETE FROM visited_countries
-        WHERE user_id = $1
-        AND country_code = $2
-        `,
-        [currentUserId, country_code]
-    );
+        await db.query(
+            `
+            DELETE FROM visited_countries
+            WHERE user_id = $1
+            AND country_code = $2
+            `,
+            [currentUserId, country_code]
+        );
 
-    res.redirect("/");
+        res.redirect("/");
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 app.listen(port, "0.0.0.0", () => {
