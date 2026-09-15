@@ -1,3 +1,4 @@
+
 * {
     box-sizing: border-box;
 }
@@ -10,9 +11,15 @@ body {
 
 body {
     font-family: Arial, sans-serif;
+
     background: #f5f5f5;
     color: #222;
 }
+
+
+/* =========================
+   MAIN
+========================= */
 
 main {
     width: 100%;
@@ -20,249 +27,434 @@ main {
     padding: 0;
 }
 
+
+/* =========================
+   TITLE
+========================= */
+
 main > h1 {
     margin: 0;
     padding: 22px 20px;
+
     text-align: center;
+
     font-size: 32px;
     font-weight: 700;
+
     background: white;
 }
+
+
+/* =========================
+   CURRENT USER
+========================= */
 
 .current_user {
     width: 100%;
+
     padding: 18px 40px;
+
     background: white;
+
     display: flex;
     flex-direction: row;
+
     align-items: center;
     justify-content: space-between;
+
     gap: 25px;
 }
 
+
+/* Current User heading */
+
 .current_user h2 {
     margin: 0;
+
     font-size: 20px;
     font-weight: 500;
+
     color: #666;
 }
 
+
+/* Current User name */
+
 .current_user p {
     margin: 0;
+
     font-size: 23px;
     font-weight: 700;
 }
 
+
+/* =========================
+   ADD COUNTRY
+========================= */
+
 .current_user form {
     display: flex;
+
     flex-direction: row;
+
     align-items: center;
+
     gap: 10px;
+
     margin: 0;
 }
 
+
 .current_user input {
     width: 280px;
+
     padding: 13px 16px;
+
     font-size: 16px;
+
     background: #eeeeee;
     color: #222;
+
     border: none;
+
     border-radius: 10px;
+
     outline: none;
 }
+
 
 .current_user input::placeholder {
     color: #888;
 }
 
+
 .current_user button {
     padding: 13px 24px;
+
     background: #222;
     color: white;
+
     border: none;
+
     border-radius: 10px;
+
     font-size: 16px;
     font-weight: 600;
+
     cursor: pointer;
+
     transition: 0.2s ease;
 }
+
 
 .current_user button:hover {
     opacity: 0.85;
+
     transform: translateY(-2px);
 }
+
+
+/* =========================
+   ERROR / MESSAGE
+========================= */
 
 main > p {
     margin: 0;
+
     padding: 12px;
+
     text-align: center;
+
     background: #f5f5f5;
+
     font-size: 16px;
 }
 
+
+/* =========================
+   MAP
+========================= */
+
 .map {
     width: 100%;
+
     margin: 0;
     padding: 0;
+
     background: #080808;
+
     display: flex;
+
     justify-content: center;
     align-items: center;
+
     overflow: hidden;
 }
 
+
 .map object {
     display: block;
+
     width: 100%;
+
     max-width: 1600px;
+
     height: auto;
+
     border: none;
+
     transform: translateX(-45px);
 }
 
+
+/* =========================
+   VISITED COUNTRIES
+========================= */
+
 .visited_countries {
     width: 100%;
+
     padding: 35px 45px;
+
     background: white;
 }
 
+
 .visited_countries h2 {
     margin: 0 0 25px 0;
+
     font-size: 28px;
 }
+
+
+/* Country list */
 
 .visited_countries ul {
     list-style: none;
+
     padding: 0;
     margin: 0;
+
     display: flex;
+
     flex-wrap: wrap;
+
     gap: 15px;
 }
 
+
+/* Country */
+
 .visited_countries li {
     padding: 16px 25px;
+
     background: #eeeeee;
+
     border: none;
+
     border-radius: 12px;
+
     font-size: 19px;
     font-weight: 600;
+
     transition: 0.2s ease;
 }
 
+
 .visited_countries li:hover {
     transform: translateY(-2px);
+
     background: #e2e2e2;
 }
 
+
+/* =========================
+   FAMILY MEMBERS
+========================= */
+
 .family_members {
     width: 100%;
+
     padding: 35px 45px;
+
     background: #f5f5f5;
 }
 
+
 .family_members h3 {
     margin: 0 0 25px 0;
+
     font-size: 28px;
 }
 
+
+/* =========================
+   USER CARD
+========================= */
+
 .user-card {
     display: flex;
+
     align-items: center;
+
     gap: 10px;
+
     margin-bottom: 12px;
 }
+
+
+/* Forms inside user card */
 
 .user-card form {
     margin: 0;
 }
 
+
+/* Username button */
+
 .user-card form:first-child button {
     padding: 15px 25px;
+
     min-width: 150px;
+
     border: none;
+
     border-radius: 12px;
+
     font-size: 18px;
     font-weight: 600;
+
     cursor: pointer;
+
     transition: 0.2s ease;
 }
 
+
 .user-card form:first-child button:hover {
     transform: translateY(-2px);
+
     filter: brightness(1.08);
 }
+
+
+/* =========================
+   DELETE BUTTON
+========================= */
 
 .user-card form:last-child button {
     width: 42px;
     height: 42px;
+
     padding: 0;
+
     display: flex;
+
     align-items: center;
     justify-content: center;
+
     background: #333;
     color: white;
+
     border: none;
+
     border-radius: 10px;
+
     font-size: 20px;
     font-weight: bold;
+
     cursor: pointer;
+
     transition: 0.2s ease;
 }
 
+
 .user-card form:last-child button:hover {
     background: #d33;
+
     transform: scale(1.05);
 }
 
+
+/* =========================
+   ADD MEMBERS
+========================= */
+
 .add_members {
     width: 100%;
+
     padding: 35px 45px;
+
     background: white;
 }
 
+
 .add_members form {
     width: 100%;
+
     display: flex;
+
     align-items: center;
+
     gap: 12px;
 }
 
+
 .add_members input {
     padding: 13px 16px;
+
     font-size: 16px;
+
     background: #eeeeee;
     color: #222;
+
     border: none;
+
     border-radius: 10px;
+
     outline: none;
 }
+
 
 .add_members input:first-child {
     width: 300px;
 }
 
+
 .add_members input:nth-child(2) {
     width: 180px;
 }
 
+
 .add_members button {
     padding: 13px 25px;
+
     background: #222;
     color: white;
+
     border: none;
+
     border-radius: 10px;
+
     font-size: 16px;
     font-weight: 600;
+
     cursor: pointer;
+
     transition: 0.2s ease;
 }
 
+
 .add_members button:hover {
     opacity: 0.85;
+
     transform: translateY(-2px);
 }
+
+
+/* =========================
+   DARK THEME
+   Browser/System Preference
+========================= */
 
 @media (prefers-color-scheme: dark) {
 
@@ -271,91 +463,136 @@ main > p {
         color: white;
     }
 
+
+    /* Title */
+
     main > h1 {
         background: #181818;
         color: white;
     }
+
+
+    /* Current user */
 
     .current_user {
         background: #202020;
         justify-content: space-around;
     }
 
+
     .current_user h2 {
         color: #aaa;
     }
 
+
     .current_user p {
         color: white;
     }
+
+
+    /* Input */
 
     .current_user input {
         background: #303030;
         color: white;
     }
 
+
     .current_user input::placeholder {
         color: #888;
     }
+
+
+    /* Add country button */
 
     .current_user button {
         background: white;
         color: #111;
     }
 
+
+    /* Message */
+
     main > p {
         background: #111;
         color: white;
     }
 
+
+    /* Map */
+
     .map {
         background: #080808;
     }
 
+
+    /* Visited countries */
+
     .visited_countries {
         background: #181818;
     }
+
 
     .visited_countries li {
         background: #252525;
         color: white;
     }
 
+
     .visited_countries li:hover {
         background: #303030;
     }
 
+
+    /* Family */
+
     .family_members {
         background: #141414;
     }
+
+
+    /* Delete */
 
     .user-card form:last-child button {
         background: #333;
         color: white;
     }
 
+
     .user-card form:last-child button:hover {
         background: #d33;
     }
 
+
+    /* Add members */
+
     .add_members {
         background: #181818;
     }
+
 
     .add_members input {
         background: #292929;
         color: white;
     }
 
+
     .add_members input::placeholder {
         color: #888;
     }
+
 
     .add_members button {
         background: white;
         color: #111;
     }
+
 }
+
+
+/* =========================
+   LAPTOP
+========================= */
 
 @media (max-width: 1200px) {
 
@@ -363,21 +600,32 @@ main > p {
         font-size: 30px;
     }
 
+
     .current_user {
         padding-left: 25px;
         padding-right: 25px;
+
         gap: 18px;
     }
+
 
     .current_user input {
         width: 220px;
     }
 
+
     .map object {
         width: 100%;
+
         transform: translateX(-35px);
     }
+
 }
+
+
+/* =========================
+   TABLET
+========================= */
 
 @media (max-width: 850px) {
 
@@ -385,26 +633,38 @@ main > p {
         font-size: 28px;
     }
 
+
     .current_user {
         flex-wrap: wrap;
+
         justify-content: space-between;
     }
+
 
     .current_user form {
         width: auto;
     }
 
+
     .map object {
         width: 105%;
+
         transform: translateX(-25px);
     }
+
 
     .visited_countries,
     .family_members,
     .add_members {
         padding: 25px;
     }
+
 }
+
+
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 600px) {
 
@@ -447,12 +707,10 @@ main > p {
 
     .map {
         width: 100%;
-        height: auto;
         overflow: hidden;
     }
 
     .map object {
-        display: block;
         width: 100%;
         max-width: 100%;
         height: auto;
