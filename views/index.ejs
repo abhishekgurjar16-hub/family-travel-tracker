@@ -1,0 +1,286 @@
+<html>
+
+<head>
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+
+<body>
+
+    <main>
+
+        <!-- =========================
+             PAGE TITLE
+        ========================== -->
+
+        <h1>Family Travel Tracker</h1>
+
+
+        <!-- =========================
+             CURRENT USER SECTION
+        ========================== -->
+
+        <section class="current_user">
+
+            <h2>Current user</h2>
+
+            <!-- Display current user's name -->
+            <p>
+                <%= userss[0].name.toUpperCase() %>
+            </p>
+
+
+            <!-- Form to add a visited country -->
+            <form action="/add" method="post">
+
+                <input
+                    type="text"
+                    name="country"
+                    placeholder="Add Country"
+                >
+
+                <button type="submit">
+                    Add
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- =========================
+             ERROR / SUCCESS MESSAGE
+        ========================== -->
+
+        <% if (error) { %>
+
+            <!-- Display error message -->
+            <p>
+                <%= error %>
+            </p>
+
+        <% } else if (message) { %>
+
+            <!-- Display success/info message -->
+            <p>
+                <%= message %>
+            </p>
+
+        <% } %>
+
+
+        <!-- =========================
+             WORLD MAP
+        ========================== -->
+
+        <section class="map">
+
+            <!-- World SVG map -->
+            <object
+                id="world_map"
+                data="/map/world.svg"
+                type="image/svg+xml">
+            </object>
+
+        </section>
+
+
+        <!-- =========================
+             VISITED COUNTRIES
+        ========================== -->
+
+        <section class="visited_countries">
+
+            <h2>Visited Countries</h2>
+
+            <ul>
+
+                <!--
+                    Loop through all countries
+                    visited by the current user
+                -->
+
+                <% countries.forEach(country => { %>
+
+                    <li>
+                        <%= country.country_name %>
+                    </li>
+
+                <% }) %>
+
+            </ul>
+
+        </section>
+
+
+        <!-- =========================
+             FAMILY MEMBERS
+        ========================== -->
+
+        <section class="family_members">
+
+            <h3>Family members</h3>
+
+
+            <!-- Loop through all family members -->
+
+            <% users.forEach(user => { %>
+
+                <div class="user-card">
+
+
+                    <!-- =========================
+                         SELECT USER
+                    ========================== -->
+
+                    <form action="/user" method="post">
+
+                        <!--
+                            Clicking the user's name
+                            changes the current user
+                        -->
+
+                        <button
+                            style="background-color: <%= user.color %>;"
+                            name="user"
+                            value="<%= user.id %>">
+
+                            <%= user.name %>
+
+                        </button>
+
+                    </form>
+
+
+                    <!-- =========================
+                         DELETE USER
+                    ========================== -->
+
+                    <form action="/delete" method="post">
+
+                        <!--
+                            X button sends the user's ID
+                            to the /delete route
+                        -->
+
+                        <button
+                            type="submit"
+                            name="user"
+                            value="<%= user.id %>">
+
+                            ×
+
+                        </button>
+
+                    </form>
+
+
+                </div>
+
+            <% }) %>
+
+        </section>
+
+
+        <!-- =========================
+             ADD FAMILY MEMBER
+        ========================== -->
+
+        <section class="add_members">
+
+            <h3>Add Family Member</h3>
+
+            <form action="/new_user" method="post">
+
+                <!-- New user's name -->
+                <input
+                    type="text"
+                    name="new_user"
+                    placeholder="Name"
+                >
+
+                <!-- New user's color -->
+                <input
+                    type="text"
+                    name="user_color"
+                    placeholder="Color"
+                >
+
+                <button type="submit">
+                    ADD
+                </button>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         MAP COLORING JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+        // Get the world map object
+        const map = document.getElementById("world_map");
+
+
+        // Wait until the SVG map has loaded
+        map.addEventListener("load", () => {
+
+            // Access the SVG document
+            const svgDocument = map.contentDocument;
+
+
+            // Convert countries data from EJS into JavaScript
+            const countries = <%- JSON.stringify(countries) %>;
+
+
+            // Loop through every visited country
+            countries.forEach(country => {
+
+
+                // Find country using its country code
+                // Example: India -> IN
+                const countryElement =
+                    svgDocument.getElementById(
+                        country.country_code
+                    );
+
+
+                // If country was found using ID
+                if (countryElement) {
+
+                    // Apply user's color to the country
+                    countryElement.style.fill = country.color;
+
+                } else {
+
+                    // If ID was not found,
+                    // search using the country name as a class
+                    const countryElements =
+                        svgDocument.querySelectorAll(
+                            "." + country.country_name
+                        );
+
+
+                    // Apply color to matching elements
+                    countryElements.forEach(element => {
+
+                        element.style.fill = country.color;
+
+                    });
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>
