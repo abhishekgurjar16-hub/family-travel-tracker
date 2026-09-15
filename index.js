@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import "dotenv/config";
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -121,7 +121,7 @@ app.post("/delete_con", async (req, res) => {
 
     res.redirect("/");
 });
-app.listen(port, () => {
+app.listen(port,"0.0.0.0", () => {
     console.log(`Server running on port ${port}`);
 });
 
