@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import "dotenv/config";
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -87,12 +87,17 @@ app.post("/add", async (req, res) => {
 app.post("/new_user", async (req, res) => {
     const user = req.body.new_user;
     const color = req.body.user_color;
+
     if (color && user) {
-        await db.query("INSERT INTO users(name,color) VALUES($1,$2)", [user, color])
+        const result = await db.query(
+            "INSERT INTO users(name, color) VALUES($1, $2) RETURNING id",
+            [user, color]
+        );
 
+        currentUserId = result.rows[0].id;
     }
-    res.redirect("/");
 
+    res.redirect("/");
 });
 
 app.post("/delete", async (req, res) => {
