@@ -25,10 +25,13 @@
             <h2>Current user</h2>
 
             <!-- Display current user's name -->
+            if (<%= userss[0] %>){
             <p>
                 <%= userss[0].name.toUpperCase() %>
             </p>
-
+            }else{
+                <p>no uder is selected</p>
+            }
 
             <!-- Form to add a visited country -->
             <form action="/add" method="post">

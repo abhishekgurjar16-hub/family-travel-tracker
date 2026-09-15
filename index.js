@@ -20,7 +20,7 @@ const db = new pg.Client({
 
 db.connect();
 
-let currentUserId = 1;
+let currentUserId = null;
 
 async function getCountries() {
     const result = await db.query(" SELECT visited_countries.country_code , countries.country_name,users.color  FROM visited_countries JOIN countries  ON visited_countries.country_code = countries.country_code JOIN users ON visited_countries.user_id = users.id WHERE visited_countries.user_id = $1", [currentUserId]);
