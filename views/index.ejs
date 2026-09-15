@@ -25,28 +25,24 @@
             <h2>Current user</h2>
 
             <!-- Display current user's name -->
-            if (<%= userss[0] %>){
-            <p>
-                <%= userss[0].name.toUpperCase() %>
-            </p>
-            }else{
-                <p>no uder is selected</p>
-            }
+            <% if (userss.length> 0) { %>
+                <p>
+                    <%= userss[0].name.toUpperCase() %>
+                </p>
+                <% } else { %>
+                    <p>no user is selected</p>
+                    <% } %>
 
-            <!-- Form to add a visited country -->
-            <form action="/add" method="post">
+                        <!-- Form to add a visited country -->
+                        <form action="/add" method="post">
 
-                <input
-                    type="text"
-                    name="country"
-                    placeholder="Add Country"
-                >
+                            <input type="text" name="country" placeholder="Add Country">
 
-                <button type="submit">
-                    Add
-                </button>
+                            <button type="submit">
+                                Add
+                            </button>
 
-            </form>
+                        </form>
 
         </section>
 
@@ -62,160 +58,144 @@
                 <%= error %>
             </p>
 
-        <% } else if (message) { %>
+            <% } else if (message) { %>
 
-            <!-- Display success/info message -->
-            <p>
-                <%= message %>
-            </p>
+                <!-- Display success/info message -->
+                <p>
+                    <%= message %>
+                </p>
 
-        <% } %>
+                <% } %>
 
 
-        <!-- =========================
+                    <!-- =========================
              WORLD MAP
         ========================== -->
 
-        <section class="map">
+                    <section class="map">
 
-            <!-- World SVG map -->
-            <object
-                id="world_map"
-                data="/map/world.svg"
-                type="image/svg+xml">
-            </object>
+                        <!-- World SVG map -->
+                        <object id="world_map" data="/map/world.svg" type="image/svg+xml">
+                        </object>
 
-        </section>
+                    </section>
 
 
-        <!-- =========================
+                    <!-- =========================
              VISITED COUNTRIES
         ========================== -->
 
-        <section class="visited_countries">
+                    <section class="visited_countries">
 
-            <h2>Visited Countries</h2>
+                        <h2>Visited Countries</h2>
 
-            <ul>
+                        <ul>
 
-                <!--
+                            <!--
                     Loop through all countries
                     visited by the current user
                 -->
 
-                <% countries.forEach(country => { %>
+                            <% countries.forEach(country=> { %>
 
-                    <li>
-                        <%= country.country_name %>
-                    </li>
+                                <li>
+                                    <%= country.country_name %>
+                                </li>
 
-                <% }) %>
+                                <% }) %>
 
-            </ul>
+                        </ul>
 
-        </section>
-
-
-        <!-- =========================
-             FAMILY MEMBERS
-        ========================== -->
-
-        <section class="family_members">
-
-            <h3>Family members</h3>
-
-
-            <!-- Loop through all family members -->
-
-            <% users.forEach(user => { %>
-
-                <div class="user-card">
+                    </section>
 
 
                     <!-- =========================
+             FAMILY MEMBERS
+        ========================== -->
+
+                    <section class="family_members">
+
+                        <h3>Family members</h3>
+
+
+                        <!-- Loop through all family members -->
+
+                        <% users.forEach(user=> { %>
+
+                            <div class="user-card">
+
+
+                                <!-- =========================
                          SELECT USER
                     ========================== -->
 
-                    <form action="/user" method="post">
+                                <form action="/user" method="post">
 
-                        <!--
+                                    <!--
                             Clicking the user's name
                             changes the current user
                         -->
 
-                        <button
-                            style="background-color: <%= user.color %>;"
-                            name="user"
-                            value="<%= user.id %>">
+                                    <button style="background-color: <%= user.color %>;" name="user"
+                                        value="<%= user.id %>">
 
-                            <%= user.name %>
+                                        <%= user.name %>
 
-                        </button>
+                                    </button>
 
-                    </form>
+                                </form>
 
 
-                    <!-- =========================
+                                <!-- =========================
                          DELETE USER
                     ========================== -->
 
-                    <form action="/delete" method="post">
+                                <form action="/delete" method="post">
 
-                        <!--
+                                    <!--
                             X button sends the user's ID
                             to the /delete route
                         -->
 
-                        <button
-                            type="submit"
-                            name="user"
-                            value="<%= user.id %>">
+                                    <button type="submit" name="user" value="<%= user.id %>">
 
-                            ×
+                                        ×
 
-                        </button>
+                                    </button>
 
-                    </form>
+                                </form>
 
 
-                </div>
+                            </div>
 
-            <% }) %>
+                            <% }) %>
 
-        </section>
+                    </section>
 
 
-        <!-- =========================
+                    <!-- =========================
              ADD FAMILY MEMBER
         ========================== -->
 
-        <section class="add_members">
+                    <section class="add_members">
 
-            <h3>Add Family Member</h3>
+                        <h3>Add Family Member</h3>
 
-            <form action="/new_user" method="post">
+                        <form action="/new_user" method="post">
 
-                <!-- New user's name -->
-                <input
-                    type="text"
-                    name="new_user"
-                    placeholder="Name"
-                >
+                            <!-- New user's name -->
+                            <input type="text" name="new_user" placeholder="Name">
 
-                <!-- New user's color -->
-                <input
-                    type="text"
-                    name="user_color"
-                    placeholder="Color"
-                >
+                            <!-- New user's color -->
+                            <input type="text" name="user_color" placeholder="Color">
 
-                <button type="submit">
-                    ADD
-                </button>
+                            <button type="submit">
+                                ADD
+                            </button>
 
-            </form>
+                        </form>
 
-        </section>
+                    </section>
 
     </main>
 
