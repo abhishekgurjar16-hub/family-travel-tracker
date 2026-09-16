@@ -1,3 +1,4 @@
+
 * {
     box-sizing: border-box;
 }
@@ -646,10 +647,9 @@ main > p {
 
 
     .map object {
-        width: 100%;
-        max-width: 100%;
+        width: 105%;
 
-        transform: none;
+        transform: translateX(-25px);
     }
 
 
