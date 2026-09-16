@@ -29,8 +29,19 @@
                     type="text"
                     name="country"
                     placeholder="Add Country"
+                    list="country-options"
+                    autocomplete="country-name"
+                    autocapitalize="words"
+                    enterkeyhint="done"
+                    maxlength="100"
                     required
                 >
+
+                <datalist id="country-options">
+                    <% countryOptions.forEach(country => { %>
+                        <option value="<%= country.country_name %>"></option>
+                    <% }) %>
+                </datalist>
 
                 <button type="submit">
                     Add

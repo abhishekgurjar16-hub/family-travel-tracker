@@ -22,6 +22,23 @@ db.connect();
 
 let currentUserId = null;
 
+const countryAliases = new Map([
+    ["usa", "United States"],
+    ["u.s.", "United States"],
+    ["u.s.a.", "United States"],
+    ["united states of america", "United States"],
+    ["uk", "United Kingdom"],
+    ["u.k.", "United Kingdom"],
+    ["uae", "United Arab Emirates"],
+    ["u.a.e.", "United Arab Emirates"]
+]);
+
+function normalizeCountryName(value) {
+    return typeof value === "string"
+        ? value.normalize("NFKC").trim().replace(/\s+/g, " ")
+        : "";
+}
+
 async function getCountries() {
     const result = await db.query(
         `
@@ -50,6 +67,14 @@ async function getUser() {
     return result.rows;
 }
 
+async function getCountryOptions() {
+    const result = await db.query(
+        "SELECT country_name FROM countries ORDER BY country_name"
+    );
+
+    return result.rows;
+}
+
 async function getuser() {
     const result = await db.query(
         "SELECT * FROM users WHERE id = $1",
@@ -64,6 +89,7 @@ app.get("/", async (req, res) => {
         const contries = await getCountries();
         const user = await getUser();
         const person = await getuser();
+        const countryOptions = await getCountryOptions();
 
         const error = req.query.error;
         const message = req.query.mess;
@@ -74,6 +100,7 @@ app.get("/", async (req, res) => {
             countries: contries,
             users: user,
             userss: person,
+            countryOptions: countryOptions,
             error: error,
             message: message
         });
@@ -103,14 +130,32 @@ app.post("/add", async (req, res) => {
             );
         }
 
-        const country_name = req.body.country;
+        const enteredCountryName = normalizeCountryName(req.body.country);
+
+        if (!enteredCountryName) {
+            return res.redirect(
+                "/?error=" + encodeURIComponent("Please enter a country name")
+            );
+        }
+
+        const countryName = countryAliases.get(enteredCountryName.toLowerCase())
+            ?? enteredCountryName;
 
         const result = await db.query(
-            "SELECT * FROM countries WHERE LOWER(country_name) = LOWER($1)",
-            [country_name]
+            `
+            SELECT country_code, country_name
+            FROM countries
+            WHERE LOWER(country_name) = LOWER($1)
+               OR LOWER(country_name) LIKE '%' || LOWER($1) || '%'
+            ORDER BY
+                CASE WHEN LOWER(country_name) = LOWER($1) THEN 0 ELSE 1 END,
+                LENGTH(country_name)
+            LIMIT 2
+            `,
+            [countryName]
         );
 
-        if (result.rows.length > 0) {
+        if (result.rows.length === 1) {
 
             const code = result.rows[0].country_code;
 
@@ -147,10 +192,18 @@ app.post("/add", async (req, res) => {
                 );
             }
 
+        } else if (result.rows.length > 1) {
+
+            const error = "More than one country matches. Please select the full country name.";
+
+            return res.redirect(
+                "/?error=" + encodeURIComponent(error)
+            );
+
         } else {
 
             const error =
-                "country not existed or please enter valid country name";
+                "Country not found. Please select a valid country name.";
 
             res.redirect(
                 "/?error=" + encodeURIComponent(error)
