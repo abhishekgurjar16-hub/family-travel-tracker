@@ -711,21 +711,21 @@ main>p {
         width: 100%;
         min-height: 46px;
     }
-
-    @media (max-width: 600px) {
-        .map {
-            width: 100%;
-            overflow-x: auto;
-            overflow-y: hidden;
-        }
-
-        .map object {
-            width: 100%;
-            max-width: none;
-            height: auto;
-            transform: none;
-        }
+@media (max-width: 600px) {
+    
+    .map {
+        width: 100%;
+        overflow: hidden;
     }
+
+    .map object {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        transform: none;
+    }
+
+}
 
     .visited_countries,
     .family_members,
