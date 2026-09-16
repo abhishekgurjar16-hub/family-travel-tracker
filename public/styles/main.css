@@ -187,6 +187,8 @@ main>p {
     justify-content: center;
     align-items: center;
 
+    line-height: 0;
+
     overflow: hidden;
 }
 
@@ -196,13 +198,13 @@ main>p {
 
     width: 100%;
 
-    max-width: 1600px;
+    max-width: 2000px;
+
+    aspect-ratio: 2000 / 857;
 
     height: auto;
 
     border: none;
-
-    transform: translateX(-45px);
 }
 
 
@@ -613,12 +615,6 @@ main>p {
     }
 
 
-    .map object {
-        width: 100%;
-
-        transform: translateX(-35px);
-    }
-
 }
 
 
@@ -796,4 +792,12 @@ main>p {
         width: 100%;
         min-height: 46px;
     }
+}
+
+/* Keep the entire SVG visible at every breakpoint. */
+.map object {
+    width: 100%;
+    max-width: 2000px;
+    height: auto;
+    transform: none;
 }

@@ -59,7 +59,9 @@
             <object
                 id="world_map"
                 data="/map/world.svg"
-                type="image/svg+xml">
+                type="image/svg+xml"
+                aria-label="World map showing visited countries">
+                Your browser could not load the world map.
             </object>
 
         </section>
@@ -158,6 +160,8 @@
         map.addEventListener("load", () => {
 
             const svgDocument = map.contentDocument;
+
+            if (!svgDocument) return;
 
             const countries = <%- JSON.stringify(countries) %>;
 
